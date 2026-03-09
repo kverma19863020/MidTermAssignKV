@@ -1,40 +1,39 @@
 import pandas as pd
-import os
-from .calculator_config import CalculatorConfig
 
 
 class History:
-    """Stores calculator history"""
+    """
+    Stores all calculator calculations.
+    Provides methods to add, clear, and convert history to DataFrame.
+    """
 
     def __init__(self):
         self.records = []
 
     def add(self, calculation):
+        """Add a calculation object to history."""
         self.records.append(calculation)
 
     def clear(self):
+        """Clear all history."""
         self.records = []
 
     def to_dataframe(self):
-        return pd.DataFrame([c.to_dict() for c in self.records])
+        """Convert history to pandas DataFrame."""
 
-    def save(self):
+        if not self.records:
+            return pd.DataFrame(columns=["operation", "operand1", "operand2", "result"])
 
-        os.makedirs(CalculatorConfig.HISTORY_DIR, exist_ok=True)
+        data = []
 
-        file_path = f"{CalculatorConfig.HISTORY_DIR}/history.csv"
+        for calc in self.records:
+            data.append(
+                {
+                    "operation": calc.operation,
+                    "operand1": calc.a,
+                    "operand2": calc.b,
+                    "result": calc.result,
+                }
+            )
 
-        df = self.to_dataframe()
-
-        df.to_csv(file_path, index=False)
-
-    def load(self):
-
-        file_path = f"{CalculatorConfig.HISTORY_DIR}/history.csv"
-
-        if not os.path.exists(file_path):
-            return
-
-        df = pd.read_csv(file_path)
-
-        self.records = df.to_dict("records")
+        return pd.DataFrame(data)

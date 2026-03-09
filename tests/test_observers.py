@@ -1,19 +1,17 @@
-from app.observers import LoggingObserver
+from app.observers import Observer, LoggingObserver
 
 
-class DummyCalculation:
-    operation = "add"
-    a = 1
-    b = 2
-    result = 3
+def test_observer_update():
+    observer = Observer()
+
+    observer.update("test")
+
+    assert observer is not None
 
 
-def test_logging_observer():
-
+def test_logging_observer_update():
     observer = LoggingObserver()
 
-    calc = DummyCalculation()
+    observer.update("calculator used")
 
-    observer.update(calc)
-
-    assert True
+    assert observer is not None

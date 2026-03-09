@@ -1,27 +1,16 @@
 """
-Implements the Observer Design Pattern.
-
-Observers react to events such as completed calculations.
+Observer Pattern implementation.
 """
 
-from .logger import logger
-
-
 class Observer:
-    """
-    Base observer interface.
-    """
+    """Base observer class."""
 
     def update(self, message: str):
         pass
 
 
 class LoggingObserver(Observer):
-    """
-    Logs events whenever a calculation occurs.
-    """
+    """Observer that logs calculator messages."""
 
     def update(self, message: str):
-
-        # Send message to logging system
-        logger.info(message)
+        print(message)

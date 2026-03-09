@@ -1,22 +1,20 @@
-"""
-Data model representing a single calculation.
-
-Using dataclass keeps the code concise and readable.
-"""
-
-from dataclasses import dataclass
 from datetime import datetime
 
 
-@dataclass
 class Calculation:
-    """
-    Represents one calculator operation record.
-    """
-    operand1: float
-    operand2: float
-    operation: str
-    result: float
 
-    # Timestamp helps track when calculation occurred
-    timestamp: datetime = datetime.now()
+    def __init__(self, operation, a, b, result):
+        self.operation = operation
+        self.a = a
+        self.b = b
+        self.result = result
+        self.timestamp = datetime.now()
+
+    def to_dict(self):
+        return {
+            "operation": self.operation,
+            "a": self.a,
+            "b": self.b,
+            "result": self.result,
+            "timestamp": self.timestamp
+        }
