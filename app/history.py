@@ -1,37 +1,40 @@
-import csv
+import pandas as pd
 import os
-from .calculation import Calculation
+from .calculator_config import CalculatorConfig
 
 
-class HistoryManager:
-    FILE_PATH = "history/history.csv"
+class History:
+    """Stores calculator history"""
 
     def __init__(self):
-        os.makedirs("history", exist_ok=True)
+        self.records = []
 
-    def save(self, calculation: Calculation):
-        file_exists = os.path.isfile(self.FILE_PATH)
+    def add(self, calculation):
+        self.records.append(calculation)
 
-        with open(self.FILE_PATH, "a", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            if not file_exists:
-                writer.writerow(
-                    ["operand1", "operand2", "operation", "result", "timestamp"]
-                )
-            writer.writerow(
-                [
-                    calculation.operand1,
-                    calculation.operand2,
-                    calculation.operation,
-                    calculation.result,
-                    calculation.timestamp,
-                ]
-            )
+    def clear(self):
+        self.records = []
 
-    def get_all(self):
-        if not os.path.exists(self.FILE_PATH):
-            return []
+    def to_dataframe(self):
+        return pd.DataFrame([c.to_dict() for c in self.records])
 
-        with open(self.FILE_PATH, "r") as csvfile:
-            reader = csv.DictReader(csvfile)
-            return list(reader)
+    def save(self):
+
+        os.makedirs(CalculatorConfig.HISTORY_DIR, exist_ok=True)
+
+        file_path = f"{CalculatorConfig.HISTORY_DIR}/history.csv"
+
+        df = self.to_dataframe()
+
+        df.to_csv(file_path, index=False)
+
+    def load(self):
+
+        file_path = f"{CalculatorConfig.HISTORY_DIR}/history.csv"
+
+        if not os.path.exists(file_path):
+            return
+
+        df = pd.read_csv(file_path)
+
+        self.records = df.to_dict("records")

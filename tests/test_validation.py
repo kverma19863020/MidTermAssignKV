@@ -1,10 +1,8 @@
 from app.input_validators import validate_number
 import pytest
 
-
 def test_valid_number():
     assert validate_number("5") == 5.0
-
 
 def test_invalid_number():
 

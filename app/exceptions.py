@@ -1,20 +1,18 @@
-"""
-Custom exception classes for the calculator application.
-These provide clearer error handling across the project.
-"""
-
-class CalculatorException(Exception):
-    """Base exception for calculator-related errors."""
+class CalculatorError(Exception):
+    """Base exception for calculator"""
     pass
 
-class DivisionByZeroError(CalculatorException):
-    """Raised when attempting to divide a number by zero."""
+
+class OperationError(CalculatorError):
+    """Raised when an invalid operation occurs"""
     pass
 
-class InvalidOperationError(CalculatorException):
-    """Raised when an unsupported operation is requested."""
+
+class ValidationError(CalculatorError):
+    """Raised when input validation fails"""
     pass
 
-class InvalidInputError(CalculatorException):
-    """Raised when user input cannot be converted to a number."""
+
+class DivisionByZeroError(OperationError):
+    """Raised when division by zero occurs"""
     pass
