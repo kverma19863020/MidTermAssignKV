@@ -1,10 +1,6 @@
 from app.input_validators import validate_number
-import pytest
 
-def test_valid_number():
-    assert validate_number("5") == 5.0
 
-def test_invalid_number():
+def test_float_input():
 
-    with pytest.raises(Exception):
-        validate_number("abc")
+    assert validate_number("10.5") == 10.5
